@@ -1,7 +1,7 @@
 ; $Id$
 
 name = etui_webform
-description = Webform components for ETUI
+description = Webform components for ETUI (Author: Alain Benbassat, alain@businessandcode.eu)
 package = ETUI
 core = 7.x
 
