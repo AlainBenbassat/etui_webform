@@ -30,8 +30,8 @@ function etui_webform_webform_select_options_info() {
 function _etui_webform_getOrganizations() {
   $organizationList = [];
 
-  $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', $etui_webform_db_params['host'], $etui_webform_db_params['db']);
-  $pdo = new PDO($dsn, $etui_webform_db_params['user'], $etui_webform_db_params['pwd']);
+  $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', ETUI_WEBFORM_DB_HOST, ETUI_WEBFORM_DB_DB);
+  $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD);
 
   $sql = "
     select
