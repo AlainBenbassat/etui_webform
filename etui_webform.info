@@ -1,0 +1,8 @@
+; $Id$
+
+name = etui_webform
+description = Webform components for ETUI
+package = ETUI
+core = 7.x
+
+files[] = etui_webform.module

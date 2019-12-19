@@ -1,0 +1,50 @@
+<?php
+
+require_once 'dbsettings.php';
+
+/**
+ * IMPORTANT !!!!
+ *
+ * You must create a file name "dbsettings.php" in this directory
+ * It should contains this:
+ *
+ * $etui_webform_db_params = [
+ *   'host' => 'ETUIDBHOST',
+ *   'user' => 'USER_NAME',
+ *   'pwd' => 'PASSWORD',
+ *   'db' => 'DATABASE NAME',
+ * ];
+ *
+ */
+function etui_webform_webform_select_options_info() {
+  $items = [];
+
+  $items['civicrm-organizations'] = array(
+    'title' => 'EWC Bodies',
+    'options callback' => '_etui_webform_getOrganizations',
+  );
+
+  return $items;
+}
+
+function _etui_webform_getOrganizations() {
+  $organizationList = [];
+
+  $sql = "
+    select
+      body_ID id
+      , concat(bodyname, ' (', bodygroup, ')') bodyname
+    from
+      active_bodies
+    order by
+      bodygroup, bodyname
+  ";
+
+  $dao = CRM_Core_DAO::executeQuery($sql);
+
+  while ($dao->fetch()) {
+    $organizationList[$dao->id] = $dao->bodyname;
+  }
+
+  return $organizationList;
+}
