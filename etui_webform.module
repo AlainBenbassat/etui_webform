@@ -28,12 +28,13 @@ function etui_webform_webform_select_options_info() {
 }
 
 function _etui_webform_getOrganizations() {
-  $organizationList = [];
+  try {
+    $organizationList = [];
 
-  $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', ETUI_WEBFORM_DB_HOST, ETUI_WEBFORM_DB_DB);
-  $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD);
+    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', ETUI_WEBFORM_DB_HOST, ETUI_WEBFORM_DB_DB);
+    $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD);
 
-  $sql = "
+    $sql = "
     select
       body_ID id
       , concat(bodyname, ' (', bodygroup, ')') bodyname
@@ -42,10 +43,14 @@ function _etui_webform_getOrganizations() {
     order by
       bodygroup, bodyname
   ";
-  $stmt = $pdo->query($sql);
+    $stmt = $pdo->query($sql);
 
-  while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
-    $organizationList[$row->id] = $row->bodyname;
+    while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
+      $organizationList[$row->id] = $row->bodyname;
+    }
+  }
+  catch (Exception $e) {
+    $organizationList[1] = $e->getMessage();
   }
 
   return $organizationList;
