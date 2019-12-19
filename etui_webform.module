@@ -32,7 +32,7 @@ function _etui_webform_getOrganizations() {
     $organizationList = [];
 
     $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', ETUI_WEBFORM_DB_HOST, ETUI_WEBFORM_DB_DB);
-    $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD);
+    $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
     $sql = "
     select
