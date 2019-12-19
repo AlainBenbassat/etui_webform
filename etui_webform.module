@@ -30,6 +30,9 @@ function etui_webform_webform_select_options_info() {
 function _etui_webform_getOrganizations() {
   $organizationList = [];
 
+  $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', $etui_webform_db_params['host'], $etui_webform_db_params['db']);
+  $pdo = new PDO($dsn, $etui_webform_db_params['user'], $etui_webform_db_params['pwd']);
+
   $sql = "
     select
       body_ID id
@@ -39,11 +42,10 @@ function _etui_webform_getOrganizations() {
     order by
       bodygroup, bodyname
   ";
+  $stmt = $pdo->query($sql);
 
-  $dao = CRM_Core_DAO::executeQuery($sql);
-
-  while ($dao->fetch()) {
-    $organizationList[$dao->id] = $dao->bodyname;
+  while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
+    $organizationList[$row->id] = $row->bodyname;
   }
 
   return $organizationList;
