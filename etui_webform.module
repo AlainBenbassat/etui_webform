@@ -31,18 +31,28 @@ function _etui_webform_getOrganizations() {
   try {
     $organizationList = [];
 
+    // connect to the remote database
     $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', ETUI_WEBFORM_DB_HOST, ETUI_WEBFORM_DB_DB);
     $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
+    // limit the number of records in edit mode
+    if (strpos(current_path(), 'webform/components') !== FALSE) {
+      $limit = ' limit 0,5';
+    }
+    else {
+      $limit = '';
+    }
+
     $sql = "
-    select
-      body_id
-      , concat(body_name, ' (', body_group, ')') bodyname
-    from
-      active_bodies
-    order by
-      body_name
-  ";
+      select
+        body_id
+        , concat(body_name, ' (', body_group, ')') bodyname
+      from
+        active_bodies
+      order by
+        body_name
+      $limit
+    ";
     $stmt = $pdo->query($sql);
 
     while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
