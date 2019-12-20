@@ -41,7 +41,7 @@ function _etui_webform_getOrganizations() {
     from
       active_bodies
     order by
-      body_group, body_name
+      body_name
   ";
     $stmt = $pdo->query($sql);
 
