@@ -36,17 +36,17 @@ function _etui_webform_getOrganizations() {
 
     $sql = "
     select
-      body_ID id
-      , concat(bodyname, ' (', bodygroup, ')') bodyname
+      body_id
+      , concat(body_name, ' (', body_group, ')') bodyname
     from
       active_bodies
     order by
-      bodygroup, bodyname
+      body_group, body_name
   ";
     $stmt = $pdo->query($sql);
 
     while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
-      $organizationList[$row->id] = $row->bodyname;
+      $organizationList[$row->body_id] = $row->bodyname;
     }
   }
   catch (Exception $e) {
