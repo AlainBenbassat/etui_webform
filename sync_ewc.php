@@ -26,6 +26,7 @@ if (!$optionGroupID) {
     'sequential' => 1,
     'name' => 'ewc_sewc_list',
     'title' => 'EWC/SEWC list',
+    'is_reserved' => 0,
     'data_type' => 'String',
   ];
   $optionGroup = civicrm_api3('OptionGroup', 'create', $params);
