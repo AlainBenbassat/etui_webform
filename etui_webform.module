@@ -36,7 +36,7 @@ function _etui_webform_getOrganizations() {
     $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
     // limit the number of records in edit mode
-    if (strpos(current_path(), 'webform/components') !== FALSE) {
+    if (strpos(current_path(), 'webform/components') !== FALSE || strpos(current_path(), 'webform/ajax') !== FALSE) {
       $limit = ' limit 0,5';
     }
     else {
