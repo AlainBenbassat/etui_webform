@@ -13,7 +13,7 @@
 require_once 'dbsettings.php';
 
 // bootstrap civicrm
-require_once '../../civicrm/civicrm.config.php';
+require_once __DIR__ . '/../../civicrm/civicrm.config.php';
 require_once 'CRM/Core/Config.php';
 $config = CRM_Core_Config::singleton();
 
