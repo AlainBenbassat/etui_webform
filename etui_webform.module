@@ -1,21 +1,5 @@
 <?php
 
-require_once 'dbsettings.php';
-
-/**
- * IMPORTANT !!!!
- *
- * You must create a file name "dbsettings.php" in this directory
- * It should contains this:
- *
- * $etui_webform_db_params = [
- *   'host' => 'ETUIDBHOST',
- *   'user' => 'USER_NAME',
- *   'pwd' => 'PASSWORD',
- *   'db' => 'DATABASE NAME',
- * ];
- *
- */
 function etui_webform_webform_select_options_info() {
   $items = [];
 
@@ -29,11 +13,9 @@ function etui_webform_webform_select_options_info() {
 
 function _etui_webform_getOrganizations() {
   try {
-    $organizationList = [];
+    civicrm_initialize();
 
-    // connect to the remote database
-    $dsn = sprintf('mysql:host=%s;dbname=%s;charset=utf8', ETUI_WEBFORM_DB_HOST, ETUI_WEBFORM_DB_DB);
-    $pdo = new PDO($dsn, ETUI_WEBFORM_DB_USER, ETUI_WEBFORM_DB_PWD, [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+    $organizationList = [];
 
     // limit the number of records in edit mode
     if (strpos(current_path(), 'webform/components') !== FALSE || strpos(current_path(), 'webform/ajax') !== FALSE) {
@@ -45,18 +27,29 @@ function _etui_webform_getOrganizations() {
 
     $sql = "
       select
-        body_id
-        , concat(body_name, ' (', body_group, ')') bodyname
+        c.id body_id,
+        concat(c.organization_name,  ' (', ewc.bodytype_525, ')') bodyname
       from
-        active_bodies
+        civicrm_contact c
+      inner join
+        civicrm_value_ewc_216 ewc on c.id = ewc.entity_id
+      where
+        c.is_deleted = 0
+      and
+        c.contact_type = 'Organization'
+      and
+        c.contact_sub_type = 'European_Works_Council'
+      and
+        ifnull(ewc.replaced_by_531, '') = ''
+      and
+        ifnull(ewc.end_530, '') = ''    
       order by
-        body_name
-      $limit
+        c.sort_name
     ";
-    $stmt = $pdo->query($sql);
+    $dao = CRM_Core_DAO::executeQuery($sql);
 
-    while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
-      $organizationList[$row->body_id] = $row->bodyname;
+    while ($dao->fetch()) {
+      $organizationList[$dao->body_id] = $dao->bodyname;
     }
   }
   catch (Exception $e) {
