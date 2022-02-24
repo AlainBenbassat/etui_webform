@@ -45,6 +45,7 @@ function _etui_webform_getOrganizations() {
         ifnull(ewc.end_530, '') = ''    
       order by
         c.sort_name
+      $limit
     ";
     $dao = CRM_Core_DAO::executeQuery($sql);
 
