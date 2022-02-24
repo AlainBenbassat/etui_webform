@@ -28,7 +28,7 @@ function _etui_webform_getOrganizations() {
     $sql = "
       select
         c.id body_id,
-        concat(c.organization_name,  ' (', ewc.bodytype_525, ')') bodyname
+        c.organization_name bodyname
       from
         civicrm_contact c
       inner join
